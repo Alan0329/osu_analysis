@@ -1,3 +1,66 @@
+# --- bootstrap: auto-install required packages into a local folder (_deps) ---
+from __future__ import annotations
+import sys, subprocess, importlib, os
+from pathlib import Path
+
+# 1) 需要的套件（左：pip 套件名；右：對應 import 名稱，用於檢查是否已存在）
+REQUIRED = {
+    "requests": "requests",
+    "mysql-connector-python": "mysql.connector",   # pip 套件名與 import 名不同
+    "SQLAlchemy": "sqlalchemy",
+    "pandas": "pandas",
+    "python-dotenv": "dotenv",
+}
+
+# 2) 將安裝目標指向專案內的本地資料夾，避免動到全域環境
+ROOT = Path(__file__).resolve().parent
+TARGET_DIR = ROOT / "_deps"
+os.makedirs(TARGET_DIR, exist_ok=True)
+
+# 3) 先把 _deps 放進 sys.path，確保後續可被 import
+if str(TARGET_DIR) not in sys.path:
+    sys.path.insert(0, str(TARGET_DIR))
+
+def ensure_packages():
+    """檢查缺少的套件並用目前這個 Python 執行檔安裝到 _deps。"""
+    missing = []
+    for pip_name, import_name in REQUIRED.items():
+        try:
+            importlib.import_module(import_name)
+        except ImportError:
+            missing.append(pip_name)
+
+    if not missing:
+        return
+
+    # 使用目前執行中的 Python 解譯器來呼叫 pip，避免版本/環境錯配
+    cmd = [
+        sys.executable, "-m", "pip", "install",
+        "--disable-pip-version-check",
+        "--no-input",
+        f"--target={str(TARGET_DIR)}",
+        *missing,
+    ]
+    # 靜默一點輸出；如果要看細節可移除 --quiet
+    cmd.insert(4, "--quiet")
+
+    try:
+        subprocess.check_call(cmd)
+    except subprocess.CalledProcessError as e:
+        print("[bootstrap] pip 安裝失敗，命令：", " ".join(cmd))
+        raise
+
+    # 安裝後重新載入路徑與模組
+    import site
+    site.addsitedir(str(TARGET_DIR))
+    for pip_name, import_name in REQUIRED.items():
+        try:
+            importlib.import_module(import_name)
+        except ImportError:
+            print(f"[bootstrap] 仍無法匯入：{import_name}（對應 pip: {pip_name}）")
+            raise
+
+ensure_packages()
 # %%
 from __future__ import annotations
 
