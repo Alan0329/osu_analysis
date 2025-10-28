@@ -13,16 +13,17 @@ CREATE TABLE IF NOT EXISTS osu_users (
     is_deleted BOOLEAN,
     is_online BOOLEAN,
     is_supporter BOOLEAN,
-    statistics_rulesets JSON,
+    stat_rulesets JSON,
     `groups` JSON,
     team JSON
 );
 
-select * from osu_users
-
+drop table user_beatmaps;
 CREATE TABLE IF NOT EXISTS user_beatmaps (
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
     user_id BIGINT NOT NULL,
-    beatmap_id BIGINT NOT NULL,
+    user_type VARCHAR(32) NOT NULL,
+    beatmap_id BIGINT,
     beatmapset_id BIGINT,
     difficulty_rating DECIMAL(10,4),
     `mode` VARCHAR(32),
@@ -31,16 +32,15 @@ CREATE TABLE IF NOT EXISTS user_beatmaps (
     title VARCHAR(255),
     favourite_count INT,
     play_count INT,
-    genre_id INT,
-    
-    PRIMARY KEY (user_id, beatmap_id),
-    CONSTRAINT fk_user_beatmaps_user FOREIGN KEY (user_id) REFERENCES osu_users(user_id) ON DELETE CASCADE
+    genre_id INT
 );
 
+drop table user_scores;
 CREATE TABLE IF NOT EXISTS user_scores (
-    score_id BIGINT PRIMARY KEY,
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    score_id BIGINT,
     user_id BIGINT NOT NULL,
-    beatmap_id BIGINT NOT NULL,
+    beatmap_id BIGINT,
     started_at DATETIME,
     ended_at DATETIME,
     accuracy DECIMAL(6,5),
@@ -49,24 +49,22 @@ CREATE TABLE IF NOT EXISTS user_scores (
     is_perfect_combo TINYINT(1) DEFAULT 0,
     total_score BIGINT,
     max_combo INT,
-    statistics_ok INT,
-    statistics_meh INT,
-    statistics_great INT,
-    statistics_ignore_hit INT,
-    statistics_ignore_miss INT,
-    statistics_large_tick_hit INT,
-    statistics_slider_tail_hit INT,
-    statistics_miss INT,
-    statistics_good INT,
-    statistics_perfect INT,
-    statistics_small_tick_miss INT,
-    statistics_small_tick_hit INT,
-    statistics_large_tick_miss INT,
-    statistics_small_bonus INT,
-    statistics_large_bonus INT,
-    statistics_combo_break INT,
-    statistics_legacy_combo_increase INT,
-    
-    CONSTRAINT fk_user_scores_user FOREIGN KEY (user_id) REFERENCES osu_users(user_id) ON DELETE CASCADE
+    stat_ok INT,
+    stat_meh INT,
+    stat_great INT,
+    stat_ignore_hit INT,
+    stat_ignore_miss INT,
+    stat_large_tick_hit INT,
+    stat_slider_tail_hit INT,
+    stat_miss INT,
+    stat_good INT,
+    stat_perfect INT,
+    stat_small_tick_miss INT,
+    stat_small_tick_hit INT,
+    stat_large_tick_miss INT,
+    stat_small_bonus INT,
+    stat_large_bonus INT,
+    stat_combo_break INT,
+    stat_legacy_combo_increase INT
 );
 
