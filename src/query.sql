@@ -1,9 +1,8 @@
 select *, datediff(last_visit, join_date) as diff_day	
 from osu_users;
 
-select * 
-from user_scores
-where beatmap_id is not NULL;
+select count(*)
+from user_scores;
 
 select *
 from user_beatmaps;
@@ -86,5 +85,24 @@ from user_beatmaps;
 
 
 
+select 
+	user_id, 
+	avg(accuracy) as avg_accuracy,
+	avg(total_score) as avg_score,
+	avg(max_combo) as avg_combo,
+	avg(stat_perfect) as avg_stat_perfect, -- osu!mania
+	avg(stat_great) as avg_stat_great, 
+	avg(stat_good) as avg_stat_good, -- osu!mania
+	avg(stat_ok) as avg_stat_ok,
+	avg(stat_meh) as avg_stat_meh,
+	avg(stat_miss) as avg_stat_miss,
+	avg(stat_miss * 1.0 / (stat_perfect + stat_great + stat_good + stat_ok + stat_meh + stat_miss)) as avg_miss_rate,
+	avg(max_combo * 1.0 / (stat_perfect + stat_great + stat_good + stat_ok + stat_meh + stat_miss)) as perfect_combo_rate
+from user_scores
+where beatmap_id is not NULL
+group by user_id; 
 
+
+select *
+from user_scores;
 

@@ -50,7 +50,7 @@ def load_existing_ids(engine) -> set:
     except Exception as exc:  # pragma: no cover - depends on DB availability
         print(f"[ERROR] Unable to load existing IDs: {exc}")
         return set()
-    return dict(zip(existing_ids['user_id'], existing_ids['beatmap_id']))
+    return existing_ids
 
 
 def clean_user_scores_to_df(user_scores, beatmap_id, user_id):
@@ -64,7 +64,7 @@ def clean_user_scores_to_df(user_scores, beatmap_id, user_id):
                 'started_at': obj.started_at,
                 'ended_at': obj.ended_at,
                 'accuracy': obj.accuracy,
-                'rank': str(obj.rank),
+                'rank': str(obj.rank)[str(obj.rank).find(".")+1:],
                 'has_replay': 1 if obj.has_replay else 0,
                 'is_perfect_combo': 1 if obj.is_perfect_combo else 0,
                 'total_score': obj.total_score,
@@ -93,7 +93,7 @@ def clean_user_scores_to_df(user_scores, beatmap_id, user_id):
         rows.append({
             'user_id': user_id,
             'score_id': None,
-            'beatmap_id': None,
+            'beatmap_id': beatmap_id,
             'started_at': None,
             'ended_at': None,
             'accuracy': None,
@@ -125,31 +125,36 @@ def clean_user_scores_to_df(user_scores, beatmap_id, user_id):
 
 
 # %%
+import numpy as np
 engine = create_db_engine(DATABASE_PASSWORD)
 api_ids_dict = load_existing_ids(engine)
+api_ids_dict = api_ids_dict.replace({np.nan: None})
+
 existing  = pd.read_sql("SELECT user_id, beatmap_id FROM user_scores", engine)
-existing_set = set()
-for uid, val in zip(existing['user_id'], existing['beatmap_id']):
-    if val is None or (isinstance(val, float) and math.isnan(val)):
-        existing_set.add((uid, None))
-    else:
-        existing_set.add((uid, val))
+existing = existing.replace({np.nan: None})  # 把 NaN 換成 None
+existing_pairs = set(zip(existing['user_id'], existing['beatmap_id']))  # 例如 {(123, 456), (789, 1011), ...}
 
-remain = {}
-for uid, val in api_ids_dict.items():  # 假設你的 dict 是 {user_id: value}
-    if val is None or (isinstance(val, float) and math.isnan(val)):
-        compare_val = None
-    else:
-        compare_val = val
-    if (uid, compare_val) not in existing_set:
-        remain[uid] = compare_val
+# 2) 你的新目標清單（兩個等長 list）
+new_user_ids = api_ids_dict['user_id'].tolist()     
+new_beatmap_ids = api_ids_dict['beatmap_id'].tolist()
 
-total_users = len(remain)
+# 3) 過濾：去掉已存在於資料庫的 pair，同時也順便去重新名單內部的重複
+filtered_pairs = []
+seen = set()
+for pair in zip(new_user_ids, new_beatmap_ids):
+    if pair in existing_pairs:
+        continue          # 已存在於 DB，跳過，不要爬
+    if pair in seen:
+        continue          # 新名單自己就重複了，跳過
+    seen.add(pair)
+    filtered_pairs.append(pair)
+
+total_users = len(filtered_pairs)
 save_df = pd.DataFrame()
 
 # %%
 api = Ossapi(CLIENT_ID, CLIENT_SECRET)
-user_scores = api.beatmap_user_scores(beatmap_id=2807834, user_id=37869961)
+# user_scores = api.beatmap_user_scores(beatmap_id=2807834, user_id=37869961)
 
 
 # %%
@@ -157,14 +162,17 @@ processed_users = 0
 last_request_time = time.perf_counter() - MIN_SECONDS_PER_REQUEST
 
 # %%
-for user_id, beatmap_id in remain.items():
-
+user_id = 37792155
+beatmap_id = 2868385.0
+for user_id, beatmap_id in filtered_pairs:
+    print(f"正在處理 user_id={user_id}, beatmap_id={beatmap_id}...")
     # 速率限制：確保每次請求間隔至少 MIN_SECONDS_PER_REQUEST 秒
     elapsed = time.perf_counter() - last_request_time
     if elapsed < MIN_SECONDS_PER_REQUEST:
         time.sleep(MIN_SECONDS_PER_REQUEST - elapsed)
+
     try:
-        if beatmap_id is None:
+        if beatmap_id is None or math.isnan(beatmap_id):
             user_scores = None
         else:
             user_scores = api.beatmap_user_scores(
