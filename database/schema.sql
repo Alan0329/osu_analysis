@@ -18,7 +18,6 @@ CREATE TABLE IF NOT EXISTS osu_users (
     team JSON
 );
 
-drop table user_beatmaps;
 CREATE TABLE IF NOT EXISTS user_beatmaps (
 	id BIGINT PRIMARY KEY AUTO_INCREMENT,
     user_id BIGINT NOT NULL,
@@ -35,7 +34,6 @@ CREATE TABLE IF NOT EXISTS user_beatmaps (
     genre_id INT
 );
 
-drop table user_scores;
 CREATE TABLE IF NOT EXISTS user_scores (
 	id BIGINT PRIMARY KEY AUTO_INCREMENT,
     score_id BIGINT,

@@ -1,20 +1,10 @@
-select *, datediff(last_visit, join_date) as diff_day	
-from osu_users;
 
 select *
 from user_scores;
 
 select *
-from user_beatmaps
-where beatmap_id is not null;
-    
-select *
-from user_beatmaps
-where user_id =37778395; 
-
-select *
 from user_beatmaps;
-
+    
 with user_data as(
 	select 
 		user_id,
@@ -74,10 +64,6 @@ on group_user_scores.user_id = user_type.user_id
 left join user_data
 on group_user_scores.user_id = user_data.user_id;
 
-select user_id, count(beatmap_id)
-from user_beatmaps
-group by user_id;
-
 
 select 
 	user_type,
@@ -86,35 +72,6 @@ select
 	avg(play_count) as avg_play_count
 from user_beatmaps
 group by user_type;
-
-
-select distinct user_id, user_type
-from user_beatmaps;
-
-
-
-
-
-select 
-	user_id, 
-	avg(accuracy) as avg_accuracy,
-	avg(total_score) as avg_score,
-	avg(max_combo) as avg_combo,
-	avg(stat_perfect) as avg_stat_perfect, -- osu!mania
-	avg(stat_great) as avg_stat_great, 
-	avg(stat_good) as avg_stat_good, -- osu!mania
-	avg(stat_ok) as avg_stat_ok,
-	avg(stat_meh) as avg_stat_meh,
-	avg(stat_miss) as avg_stat_miss,
-	avg(stat_miss * 1.0 / (stat_perfect + stat_great + stat_good + stat_ok + stat_meh + stat_miss)) as avg_miss_rate,
-	avg(max_combo * 1.0 / (stat_perfect + stat_great + stat_good + stat_ok + stat_meh + stat_miss)) as perfect_combo_rate
-from user_scores
-where beatmap_id is not NULL
-group by user_id; 
-
-
-select *
-from user_scores;
 
 
 select *
@@ -127,7 +84,6 @@ on osu_users.user_id = ut.user_id
 where ut.user_id is not null
 	and is_bot = 0
 	and is_deleted = 0;
-
 
 with diff as (
 	select *, datediff(last_visit, join_date) as diff_day	
@@ -142,6 +98,3 @@ from (
 	from diff
 ) as dd
 group by user_type;
-
-
-
