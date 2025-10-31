@@ -262,3 +262,5 @@ run_post_hoc_test(col='favourite_count')
 run_post_hoc_test(col='play_count')
 # 洞察： 玩家留存與「挑戰曲線」強烈相關。 從 Early → Trial → Retained，難度階層上升顯著。 顯示玩家在找到「適合自己挑戰強度」後，會更容易長期留在遊戲中。
 # 洞察： Retained 玩家偏好冷門譜面。 反之，新手與試玩者更常追隨社群熱門（高收藏數）內容。 留存者逐漸形成「個人化偏好」，而非被社群潮流驅動。
+
+# %%

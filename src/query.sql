@@ -2,8 +2,7 @@ select *, datediff(last_visit, join_date) as diff_day
 from osu_users;
 
 select *
-from user_scores
-where user_id =37778395;
+from user_scores;
 
 select *
 from user_beatmaps
@@ -134,8 +133,15 @@ with diff as (
 	select *, datediff(last_visit, join_date) as diff_day	
 	from osu_users
 )
-select *, if(diff_day < 7, "early_churn_users", if(diff_day > 30, "retained_users", "trial_users")) as user_type 
-from diff
+select 
+	user_type,
+	sum(is_supporter = 1),
+	ROUND(SUM(is_supporter)*1.0/COUNT(*), 4) AS supporter_ratio
+from (
+	select *, if(diff_day <= 7, "early_churn_users", if(diff_day > 30, "retained_users", "trial_users")) as user_type 
+	from diff
+) as dd
+group by user_type;
 
 
 
