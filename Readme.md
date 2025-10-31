@@ -211,7 +211,7 @@ osu 的營運資金來源大多為玩家的捐款以及 osu!store 的周邊商�
 
 
 
-# 附錄：ERD、方法、限制、代碼連結
+# 附錄：ERD、方法、限制
 
 ## ERD
 ![alt text](<data/OSU Database ERD.png>)
