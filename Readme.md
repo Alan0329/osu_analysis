@@ -198,7 +198,7 @@ Player segmentation (by days since join)
 2. **Trial (7–30 days)**
    * Keep some popular maps as a buffer in week 1; as accuracy stabilizes (~0.77), gradually push mid-tier difficulty (e.g., +0.1–0.2 over commonly played maps).
    * **Mid-tier challenge missions:** Focus on acc, miss rate, and Great ratio rather than raw score alone.
-   * **Lightweight social features:** Recommend playlists commonly played by “similar-performance players.”
+   * **Lightweight social features:** Recommend beatmaps commonly played by “similar-performance players.”
 
 3. **Retained (> 30 days)**
    * **Personalized pool:** Continue serving high-difficulty, less mainstream maps aligned with historical preferences to maintain novelty.
@@ -226,9 +226,9 @@ Player segmentation (by days since join)
 
 
 # 專案情境 
-osu 是一款在 Windows 平台上的節奏音樂遊戲，在 2007 年由 peppy 與開發夥伴推出因其免費、豐富的遊玩模式與可自己設計譜面而受社群推崇主要包含四種模式：「osu!」、「osu!taiko」、「osu!CatchtheBeat」以及「osu!mania」「osu!」模式隨著節奏，用鼠標點擊譜面上的圈圈、拖曳滑條和旋轉轉盤，為最早開發的模式，也是最主要的玩法；「su!Taiko」模式需要隨著節奏，根據螢幕的指示，在適當的時機敲擊；「osu!CatchTheBeat」模式需要操作角色接住從天而降的水果；「osu!mania」模式遊玩時會有音符或滑條從螢幕上方不同位置落下，玩家需要在特定時間按下或按住對應鍵
+osu 是一款在 Windows 平台上的節奏音樂遊戲，在 2007 年由 peppy 與開發夥伴推出因其免費、豐富的遊玩模式與可自己設計譜面而受社群推崇主要包含四種模式：「osu!」、「osu!taiko」、「osu!CatchtheBeat」以及「osu!mania」「osu!」模式隨著節奏，用鼠標點擊譜面上的圈圈、拖曳滑條和旋轉轉盤，為最早開發的模式，也是最主要的玩法；「su!Taiko」模式需要隨著節奏，根據螢幕的指示，在適當的時機敲擊；「osu!CatchTheBeat」模式需要操作角色接住從天而降的水果；「osu!mania」模式遊玩時會有音符或滑條從螢幕上方不同位置落下，玩家需要在特定時間按下或按住對應鍵。
 
-osu 的營運資金來源大多為玩家的捐款以及 osu!store 的周邊商品銷售因此 supporter（贊助者）變多，對於團隊才有經營下去的動力本專案假設我為該團隊的資料分析師，為 osu 團隊提供建議，目標是提出用於優化遊玩體驗並提升團隊經營的動力
+osu 的營運資金來源大多為玩家的捐款以及 osu!store 的周邊商品銷售因此 supporter（贊助者）變多，對於團隊才有經營下去的動力本專案假設我為該團隊的資料分析師，為 osu 團隊提供建議，目標是提出用於優化遊玩體驗並提升團隊經營的動力。
 
 * **北極星指標：Supporter 數量與占比成長**
 * **關鍵問題：「如何讓 Supporter 數量增長」**
@@ -296,7 +296,7 @@ osu 的營運資金來源大多為玩家的捐款以及 osu!store 的周邊商�
 
 * 綜合以上
   1. 玩越久，表現會越好 
-  2. 剛玩，表現差留下來的可能性就更低
+  2. 剛玩，表現差，留下來的可能性就更低
   
 #### 但看起來有差異，實際上真的有差異嗎？來進行 ANOVA 檢定
 
@@ -313,7 +313,7 @@ osu 的營運資金來源大多為玩家的捐款以及 osu!store 的周邊商�
 > 註：顯著性以 p<0.05 判定
 
 * 有顯著差異：accuracy、score、miss rate、great  
-  * 三群命中率顯著不同表現好 → 成就感高 → 留存高
+  * 三群命中率顯著不同，表現好 → 成就感高 → 留存高
   * 留存時間越長，平均分數越高，投入程度可能更深
   * 流失者錯誤率高，表示早期挫折感強
   * 命中「great」比例明顯差異，與技術表現一致
@@ -354,12 +354,10 @@ osu 的營運資金來源大多為玩家的捐款以及 osu!store 的周邊商�
 
 
 ### 假設一總結
-1. 準確度：玩家若能在前 7～30 天內達到**約 0.77 以上命中率**，就有高機率進入留存階段，
+1. 準確度：玩家若能在前 7～30 天內達到**約 0.77 以上命中率**，就有高機率進入留存階段
 2. 分數：玩家若能在試玩期內持續達到較高得分(270K→320K)，以 300K 為目標，留存機率更高
 3. 錯誤率：高錯誤率的玩家容易在七天內離開，所以「降低初期挫折」比提升高階挑戰更能改善留存
 4. hit great：留存者不只是命中多，而是「命中品質」高遊戲內若能強化「Great」命中的回饋感，可能促進成就感與持續動機
-
-
 
 ## 假設二：內容面（beatmap）
 
@@ -412,8 +410,8 @@ osu 的營運資金來源大多為玩家的捐款以及 osu!store 的周邊商�
 
 ### 假設二結論（行動化）
 
-1. 挑戰曲線是留存關鍵：不同階段難度顯著上升玩家找到「合適的挑戰強度」，更容易長期留下
-2. 從「熱門導入」到「個人化深化」：Retained 明顯傾向低收藏/少被玩的譜面，代表長期動機來自個人化風格養成，而非單純追隨社群熱門
+1. 挑戰曲線是留存關鍵：不同階段難度顯著上升，玩家找到「合適的挑戰強度」，更容易長期留下
+2. 從熱門到個人化：Retained 明顯傾向低收藏/少被玩的譜面，代表長期動機來自個人化風格養成，而非單純追隨社群熱門
 3. 產品策略（兩段式推薦）：
    * 0–7 日（新手）：以熱門且易上手為主，快速建立成功體驗、降低挫折
    * 7–30 日（試用）：依玩家 accuracy / miss pattern 推薦中階難度；引導難度漸進提升
@@ -429,11 +427,11 @@ osu 的營運資金來源大多為玩家的捐款以及 osu!store 的周邊商�
 
 2. 試用期（7–30 日）
     * 第 1 週仍以熱門作緩衝；隨 accuracy 穩定（~0.77）逐步推中階難度譜面（例如：比常玩譜面 +0.1～0.2 難度）
-    * 中階挑戰任務：以 acc、miss_rate、Great 比例為主題的挑戰，避免只追分數
-    * 輕社群連結：推薦「相似表現玩家」常玩的曲目清單
+    * 中階挑戰任務：以 acc、miss_rate、Great 比例為主題的挑戰，避免只在乎分數
+    * 社群連結：推薦「相似表現玩家」常玩的譜面清單
 
 3. 留存期（>30 日）
-    * 個人化曲目池：持續供給高難度、偏冷門且符合玩家歷史偏好的曲目，維持挑戰新鮮感
+    * 個人化譜面：持續供給高難度、偏冷門且符合玩家歷史偏好的譜面，維持挑戰新鮮感
     * 長期成就系統：建立可長期累積的非付費成就，在此基礎上再溫和引導 Supporter 升級（外觀、徽章、紀念物）
 
 
